@@ -3,7 +3,6 @@ def print_stack(stack):
 
 def run_program(file_path):
     stack = []
-    temp_values = []  # для хранения временных значений после GET
 
     with open(file_path, 'r') as file:
         for line in file:
@@ -33,12 +32,7 @@ def run_program(file_path):
                     print("Ошибка: POP с пустого стека")
 
             elif command == "ADD":
-                if len(temp_values) >= 2:
-                    a = temp_values.pop(0)
-                    b = temp_values.pop(0)
-                    result = a + b
-                    temp_values.insert(0, result)
-                elif len(stack) >= 2:
+                if len(stack) >= 2:
                     a = stack.pop(0)
                     b = stack.pop(0)
                     stack.insert(0, a + b)
@@ -46,12 +40,7 @@ def run_program(file_path):
                     print("Ошибка: мало элементов для ADD")
 
             elif command == "SUB":
-                if len(temp_values) >= 2:
-                    a = temp_values.pop(0)
-                    b = temp_values.pop(0)
-                    result = b - a
-                    temp_values.insert(0, result)
-                elif len(stack) >= 2:
+                if len(stack) >= 2:
                     a = stack.pop(0)
                     b = stack.pop(0)
                     stack.insert(0, b - a)
@@ -59,12 +48,7 @@ def run_program(file_path):
                     print("Ошибка: мало элементов для SUB")
 
             elif command == "MULT":
-                if len(temp_values) >= 2:
-                    a = temp_values.pop(0)
-                    b = temp_values.pop(0)
-                    result = a * b
-                    temp_values.insert(0, result)
-                elif len(stack) >= 2:
+                if len(stack) >= 2:
                     a = stack.pop(0)
                     b = stack.pop(0)
                     stack.insert(0, a * b)
@@ -79,16 +63,14 @@ def run_program(file_path):
                     index = int(parts[1])
                     if 0 <= index < len(stack):
                         value = stack[index]
-                        temp_values.insert(0, value)
+                        stack.insert(0, value)  # Просто добавляем копию в начало
                     else:
                         print(f"Ошибка: индекс {index} вне диапазона стека")
                 except ValueError:
                     print(f"Ошибка: {parts[1]} не индекс")
 
             elif command == "PRINT":
-                if temp_values:
-                    print("Результат PRINT:", temp_values[0])
-                elif stack:
+                if stack:
                     print("Результат PRINT:", stack[0])
                 else:
                     print("Ошибка: стек пустой")
