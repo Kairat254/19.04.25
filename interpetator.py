@@ -68,4 +68,4 @@ def run_program(file_path):
 
 # Точка входа
 if __name__ == "__main__":
-    run
+    run_program("program.txt")
