@@ -71,6 +71,62 @@ def run_program(file_path):
             else:
                 raise RuntimeError(f"[строка {i}] JUMP в недопустимую строку: {target}")
 
+        elif command == "JUMP_REL":
+            if len(parts) != 2:
+                raise RuntimeError(f"[строка {i}] JUMP_REL без аргумента")
+            offset = int(parts[1])
+            target = i + offset
+            if 0 <= target < len(lines):
+                i = target
+                continue
+            else:
+                raise RuntimeError(f"[строка {i}] JUMP_REL прыжок вне допустимого диапазона: {target}")
+
+        elif command == "JUMP_IF_EQ":
+            if len(parts) != 2:
+                raise RuntimeError(f"[строка {i}] JUMP_IF_EQ без индекса")
+            if len(stack) < 2:
+                raise RuntimeError(f"[строка {i}] недостаточно элементов для JUMP_IF_EQ")
+            target = int(parts[1])
+            a = stack.pop(0)
+            b = stack.pop(0)
+            if a == b:
+                if 0 <= target < len(lines):
+                    i = target
+                    continue
+                else:
+                    raise RuntimeError(f"[строка {i}] JUMP_IF_EQ в недопустимую строку: {target}")
+
+        elif command == "JUMP_IF_LT":
+            if len(parts) != 2:
+                raise RuntimeError(f"[строка {i}] JUMP_IF_LT без индекса")
+            if len(stack) < 2:
+                raise RuntimeError(f"[строка {i}] недостаточно элементов для JUMP_IF_LT")
+            target = int(parts[1])
+            a = stack.pop(0)
+            b = stack.pop(0)
+            if a < b:
+                if 0 <= target < len(lines):
+                    i = target
+                    continue
+                else:
+                    raise RuntimeError(f"[строка {i}] JUMP_IF_LT в недопустимую строку: {target}")
+
+        elif command == "JUMP_IF_GT":
+            if len(parts) != 2:
+                raise RuntimeError(f"[строка {i}] JUMP_IF_GT без индекса")
+            if len(stack) < 2:
+                raise RuntimeError(f"[строка {i}] недостаточно элементов для JUMP_IF_GT")
+            target = int(parts[1])
+            a = stack.pop(0)
+            b = stack.pop(0)
+            if a > b:
+                if 0 <= target < len(lines):
+                    i = target
+                    continue
+                else:
+                    raise RuntimeError(f"[строка {i}] JUMP_IF_GT в недопустимую строку: {target}")
+
         else:
             raise RuntimeError(f"[строка {i}] неизвестная команда: {command}")
 
